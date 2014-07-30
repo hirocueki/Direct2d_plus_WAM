@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "Direct2d_plus_WAM.h"
+#include "d2d\D2DDriver.h"
+#include "d2d\ShapeRenderer.h"
 
 #define MAX_LOADSTRING 100
 
@@ -17,6 +19,14 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
+void Render(HDC hDC);
+void ResizeRenderTarget();
+
+
+// 
+D2DDriver driver;
+
+
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPTSTR    lpCmdLine,
@@ -25,7 +35,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: ここにコードを挿入してください。
 	MSG msg;
 	HACCEL hAccelTable;
 
@@ -83,16 +92,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	return RegisterClassEx(&wcex);
 }
 
-//
-//   関数: InitInstance(HINSTANCE, int)
-//
-//   目的: インスタンス ハンドルを保存して、メイン ウィンドウを作成します。
-//
-//   コメント:
-//
-//        この関数で、グローバル変数でインスタンス ハンドルを保存し、
-//        メイン プログラム ウィンドウを作成および表示します。
-//
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    HWND hWnd;
@@ -107,22 +106,16 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
+   driver.Initialize(hWnd);
+
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
    return TRUE;
 }
 
-//
-//  関数: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  目的:    メイン ウィンドウのメッセージを処理します。
-//
-//  WM_COMMAND	- アプリケーション メニューの処理
-//  WM_PAINT	- メイン ウィンドウの描画
-//  WM_DESTROY	- 中止メッセージを表示して戻る
-//
-//
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	int wmId, wmEvent;
@@ -140,18 +133,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
-		case IDM_EXIT:
+
+		case IDM_EXIT:			
 			DestroyWindow(hWnd);
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 		break;
+
 	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		// TODO: 描画コードをここに追加してください...
+		
+		Render(hdc);
+
 		EndPaint(hWnd, &ps);
 		break;
+
+	case WM_SIZE:
+		ResizeRenderTarget();
+
+		break;
+
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -160,6 +164,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	return 0;
 }
+
+
+
 
 // バージョン情報ボックスのメッセージ ハンドラーです。
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -179,4 +186,40 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+
+
+
+void ResizeRenderTarget()
+{
+	auto pRT = driver.GetRenderTarget();
+	if (!pRT)
+		return;
+
+	CRect rcSelf;
+	::GetWindowRect(pRT->GetHwnd(), &rcSelf);
+	pRT->Resize(D2D1::SizeU(rcSelf.Width(), rcSelf.Height()));
+}
+
+void Render(HDC hDC)
+{
+	auto pRT = driver.GetRenderTarget();
+	if (!pRT)
+		return;
+
+	if (!(pRT->CheckWindowState() & D2D1_WINDOW_STATE_OCCLUDED))
+	{
+		pRT->BeginDraw();
+
+		pRT->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+		//ShapeRenderer::DrawPlay(pRT);
+		ShapeRenderer::DrawRectangle(pRT);
+
+		if (pRT->EndDraw() == D2DERR_RECREATE_TARGET)
+		{
+			driver.RecreateDeviceIndependentResources(pRT->GetHwnd());
+		}
+	}
 }

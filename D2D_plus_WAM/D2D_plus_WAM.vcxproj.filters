@@ -14,24 +14,33 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="ソース ファイル\d2d">
-      <UniqueIdentifier>{18ecb9bc-c579-43d6-8467-51fc663425c0}</UniqueIdentifier>
+      <UniqueIdentifier>{e9c82937-6ded-47c6-aeba-58c00ee22b66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="D2D_plus_WAM.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildView.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Direct2d_plus_WAM.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="d2d\CoCommon.h">
+      <Filter>ソース ファイル\d2d</Filter>
     </ClInclude>
     <ClInclude Include="d2d\D2DDriver.h">
       <Filter>ソース ファイル\d2d</Filter>
@@ -39,15 +48,18 @@
     <ClInclude Include="d2d\ShapeRenderer.h">
       <Filter>ソース ファイル\d2d</Filter>
     </ClInclude>
-    <ClInclude Include="d2d\CoCommon.h">
-      <Filter>ソース ファイル\d2d</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D2D_plus_WAM.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Direct2d_plus_WAM.cpp">
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildView.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="d2d\D2DDriver.cpp">
@@ -58,15 +70,20 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Direct2d_plus_WAM.rc">
+    <ResourceCompile Include="D2D_plus_WAM.rc">
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
+    <None Include="res\D2D_plus_WAM.rc2">
+      <Filter>リソース ファイル</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\D2D_plus_WAM.ico">
       <Filter>リソース ファイル</Filter>
     </Image>
-    <Image Include="Direct2d_plus_WAM.ico">
+    <Image Include="res\Toolbar.bmp">
       <Filter>リソース ファイル</Filter>
     </Image>
   </ItemGroup>
