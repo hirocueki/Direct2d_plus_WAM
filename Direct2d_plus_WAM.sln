@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Direct2d_plus_WAM", "Direct2d_plus_WAM\Direct2d_plus_WAM.vcxproj", "{C8520F97-E51F-4E0C-926C-D1475D20503E}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2D_plus_WAM", "D2D_plus_WAM\D2D_plus_WAM.vcxproj", "{E56A446B-119F-4696-B51D-030DDEEAE303}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C8520F97-E51F-4E0C-926C-D1475D20503E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C8520F97-E51F-4E0C-926C-D1475D20503E}.Debug|Win32.Build.0 = Debug|Win32
-		{C8520F97-E51F-4E0C-926C-D1475D20503E}.Release|Win32.ActiveCfg = Release|Win32
-		{C8520F97-E51F-4E0C-926C-D1475D20503E}.Release|Win32.Build.0 = Release|Win32
 		{E56A446B-119F-4696-B51D-030DDEEAE303}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E56A446B-119F-4696-B51D-030DDEEAE303}.Debug|Win32.Build.0 = Debug|Win32
 		{E56A446B-119F-4696-B51D-030DDEEAE303}.Release|Win32.ActiveCfg = Release|Win32
