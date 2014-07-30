@@ -1,30 +1,21 @@
 
-// ChildView.h : CChildView クラスのインターフェイス
-//
-
-
 #pragma once
 
-
-// CChildView ウィンドウ
+#include "d2d\D2DDriver.h"
 
 class CChildView : public CWnd
 {
-// コンストラクション
 public:
 	CChildView();
 
-// 属性
-public:
+private:
 
-// 操作
-public:
+	D2DDriver mDriver;
 
-// オーバーライド
-	protected:
+	void Render(HDC hDC);
+
+protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
-// 実装
 public:
 	virtual ~CChildView();
 
@@ -32,5 +23,8 @@ public:
 protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 

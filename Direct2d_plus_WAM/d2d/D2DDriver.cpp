@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "D2DDriver.h"
 
 D2DDriver::D2DDriver()
@@ -51,16 +51,6 @@ ID2D1HwndRenderTarget* D2DDriver::GetRenderTarget() const
     return m_pRenderTarget;
 }
 
-void D2DDriver::ResizeRenderTarget()
-{
-	auto pRT = GetRenderTarget();
-	if (!pRT)
-		return;
-
-	CRect rcSelf;
-	::GetWindowRect(pRT->GetHwnd(), &rcSelf);
-	pRT->Resize(D2D1::SizeU(rcSelf.Width(), rcSelf.Height()));
-}
    
 /*
  *	デバイス依存リソースの再構築（デバイスロスト用）

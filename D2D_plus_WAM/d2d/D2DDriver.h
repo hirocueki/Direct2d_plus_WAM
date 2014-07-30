@@ -18,7 +18,9 @@ public:
 	HRESULT Initialize(HWND hWnd);
 	HRESULT RecreateDeviceIndependentResources(HWND hWnd);
     ID2D1HwndRenderTarget* GetRenderTarget() const;
-	
+
+	void ResizeRenderTarget();
+
 
 private:
 	HRESULT CreateResources();

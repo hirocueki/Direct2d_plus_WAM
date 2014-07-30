@@ -13,18 +13,10 @@ public:
 protected: 
 	DECLARE_DYNAMIC(CMainFrame)
 
-// 属性
-public:
-
-// 操作
-public:
-
-// オーバーライド
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
-// 実装
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -32,17 +24,12 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:  // コントロール バー用メンバー
-	CToolBar          m_wndToolBar;
-	CStatusBar        m_wndStatusBar;
+protected:
 	CChildView    m_wndView;
 
-// 生成された、メッセージ割り当て関数
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
-	afx_msg void OnApplicationLook(UINT id);
-	afx_msg void OnUpdateApplicationLook(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
 
 };
