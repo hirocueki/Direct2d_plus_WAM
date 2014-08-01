@@ -102,3 +102,93 @@ HRESULT ShapeRenderer::DrawPlay(ID2D1RenderTarget* pRT)
 	pRT->FillRoundedRectangle(MicRoundRoundRect, spBrushMic);
 	return hr;
 }
+
+/////////////////////////////////////////////////
+
+// ポイントを中心とした矩形を返却する
+CD2DRectF MakeRectToCenterPoint(D2D1_POINT_2F center, FLOAT width, FLOAT height)
+{
+	const CD2DRectF rect(
+		center.x - width / 2,
+		center.y - height / 2,
+		center.x + width / 2,
+		center.y + height/ 2
+		);
+
+	return rect;
+}
+
+
+HRESULT ToggleSwitchRenderer::Draw(ID2D1RenderTarget* pRT, IDWriteTextFormat* pTF, const ToggleSwitch& ts)
+{
+	HRESULT hr = S_OK;
+
+
+	const auto Canvas = pRT->GetSize();
+	ASSERT(Canvas.width);
+	ASSERT(Canvas.height);
+
+#define Control_Width 100.0f
+#define Control_Height (Control_Width/2.0f)
+
+
+#define ControlBall_Width	Control_Height-5.0f
+#define ControlBall_Height	Control_Height-5.0f
+
+	const CD2DRectF box = ts.box;
+	const CString label = ts.label;
+	const bool on = ts.on;
+
+	const auto control_center = CD2DPointF(
+		(box.right - box.left) / 4 * 3,
+		box.top + ((box.bottom - box.top) / 2)
+		);
+	const CD2DRectF control = MakeRectToCenterPoint(control_center, Control_Width, Control_Height);
+	
+	const auto control_ball_center =
+		on ?
+		CD2DPointF(control_center.x + Control_Width / 4, control_center.y) :
+		CD2DPointF(control_center.x - Control_Width / 4, control_center.y);
+
+
+	const CD2DRectF control_ball = MakeRectToCenterPoint(control_ball_center, ControlBall_Width, ControlBall_Height);
+
+	
+
+	CComPtr<ID2D1SolidColorBrush> spBrushText;
+	IFR(pRT->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &spBrushText));
+
+	CComPtr<ID2D1SolidColorBrush> spBrush;
+	IFR(pRT->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::WhiteSmoke), &spBrush));
+
+	CComPtr<ID2D1SolidColorBrush> spBrushControl;
+	IFR(pRT->CreateSolidColorBrush(
+		on ? D2D1::ColorF(D2D1::ColorF::LightGreen) : D2D1::ColorF(D2D1::ColorF::LightGray)
+		, &spBrushControl));
+
+	CComPtr<ID2D1SolidColorBrush> spBrushShadow;
+	IFR(pRT->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::LightGray), &spBrushShadow));
+	
+	CComPtr<ID2D1SolidColorBrush> spBrushBall;
+	IFR(pRT->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &spBrushBall));
+
+
+	pRT->FillRectangle(box, spBrush);
+	pRT->FillRectangle(control, spBrushControl);
+	pRT->DrawRectangle(control, spBrushShadow);
+	pRT->FillRectangle(control_ball, spBrushBall);
+	
+
+
+	// メニューのレンダリング
+	pRT->DrawText(
+		label,
+		_tcslen(label),
+		pTF,
+		box,
+		spBrushText,
+		D2D1_DRAW_TEXT_OPTIONS_NO_SNAP,
+		DWRITE_MEASURING_MODE_NATURAL);
+
+	return hr;
+}

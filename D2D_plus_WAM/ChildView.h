@@ -11,6 +11,7 @@ public:
 private:
 
 	D2DDriver mDriver;
+	D2DTextDriver m_textDriver;
 
 	void Render(HDC hDC);
 

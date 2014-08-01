@@ -12,6 +12,8 @@
 
 CChildView::CChildView()
 {
+	
+
 }
 
 CChildView::~CChildView()
@@ -68,6 +70,16 @@ void CChildView::OnSize(UINT nType, int cx, int cy)
 }
 
 
+const CString label1(_T("Enable Direct2D hoge"));
+const CString label2(_T("ƒTƒ“ƒvƒ‹‚È‚Ì‚Å‚·"));
+
+#define Margin 5.0f
+#define Box_Height 100.0f
+#define Control_Width 100.0f
+#define Control_Height (Control_Width/2.0f)
+
+#define ZeroF	0.0f
+
 // rendering shapes
 void CChildView::Render(HDC hDC)
 {
@@ -79,9 +91,28 @@ void CChildView::Render(HDC hDC)
 	{
 		pRT->BeginDraw();
 
-		pRT->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+		pRT->Clear(D2D1::ColorF(D2D1::ColorF::WhiteSmoke));
 
-		ShapeRenderer::DrawRectangle(pRT);
+		const auto Canvas = pRT->GetSize();
+		ASSERT(Canvas.width);
+		ASSERT(Canvas.height);
+
+		d2dutil::Boxies boxies;
+		d2dutil::RectangleSlicer::Slice(CD2DRectF(ZeroF, ZeroF, Canvas.width, Canvas.height), 8, boxies);
+
+		bool state = true;
+		for each(auto box in boxies)
+		{
+			ToggleSwitch ts;
+			ts.box = box;
+			ts.label = label1;
+			ts.on = state;
+			
+			state = !state;
+
+			ToggleSwitchRenderer::Draw(pRT, mDriver.GetTextFormat(), ts);
+		}
+
 
 		if (pRT->EndDraw() == D2DERR_RECREATE_TARGET)
 		{
